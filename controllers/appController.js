@@ -56,7 +56,7 @@ exports.register = (req, res) => {
     errors.push({ msg: 'Please enter all fields' });
   }
 
-  if (username.length < 25) {
+  if (username.length > 25) {
     errors.push({ msg: 'Username cannot exceed 25 characters' });
   }
 
