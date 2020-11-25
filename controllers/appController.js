@@ -39,6 +39,31 @@ exports.getPost = async (req, res,) => {
   }
 };
 
+exports.getUserProfile = async (req, res,) => {
+  try {
+    const user = await User.find({username: req.params.username});
+    const posts = await Post.find({author: req.params.username})
+    .sort({ posted: -1 });
+    const comments = await Comment.find({username: req.params.username})
+    .sort({ commentedAt: -1 });
+    res.render('userprofile', {
+      styles: ['simple-sidebar'],
+      user: user[0],
+      posts: posts,
+      comments: comments,
+      libs: ['sidebar'],
+      username: req.user.username
+    })
+  } catch (error) {
+    req.flash(
+      'error_msg',
+      'The post doesn\'t exist'
+    );
+    res.redirect('/home');
+  }
+};
+
+
 
 // POST register
 
@@ -149,7 +174,6 @@ exports.logout = (req, res) => {
 
 exports.postUpdate = (req, res) => {
   
-  console.log(req.body);
   const {
     title,
     author,
@@ -187,7 +211,6 @@ exports.postUpdate = (req, res) => {
       bodytext
     });
 
-    console.log(newPost);
     newPost.save()
     .then( posts => {
       req.flash(
@@ -210,7 +233,6 @@ exports.postComment = async (req, res) => {
     postID,
     commentBody
   } = req.body;
-  console.log(req.body);
   const post = await Post.find({_id: postID});
   const comments = await Comment.find({postID: postID})
   .sort({ commentedAt: -1 });
@@ -243,7 +265,6 @@ exports.postComment = async (req, res) => {
       commentBody
     });
 
-    console.log(newComment);
     newComment.save()
     .then( posts => {
       req.flash(

@@ -4,7 +4,7 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">Start Bootstrap </div>
       <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="/user/<%= username %>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
@@ -56,28 +56,29 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <h1 class="my-4">Page Heading
-                <small>Secondary Text</small>
+                <h1 class="my-4">Home
+                <small>For All Types Of Posts</small>
                 </h1>
                 <%- include ('partials/messages') %>
                 <% if (posts.length > 0) { %>
                   <% for (let post of posts) { %>
                     <div class="card mb-4">
+                      <a href="/post/<%= post._id %>">
                       <img class="card-img-top" src="https://picsum.photos/seed/<%= post._id %>/750/300" alt="Card image cap">
+                      </a>
                       <div class="card-body">
                         <h2 class="card-title" style="word-wrap:break-word"><%= post.title %></h2>
                         <p class="card-text" style="word-wrap:break-word"><%= post.bodytext %></p>
                         <a href="/post/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
                       </div>
                       <div class="card-footer text-muted">
-                        Posted on <%= new Date(post.posted).toDateString() %>
-                        <a href="#"><%= post.author %></a>
+                        Posted on <%= new Date(post.posted).toDateString() %> by
+                        <a href="/user/<%= post.author %>"><%= post.author %></a>
                       </div>
                     </div>
                   <% } %>
                 <% } %>
 
-                <span id='post'></span>
 
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center mb-4">

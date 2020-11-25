@@ -4,7 +4,7 @@
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">Start Bootstrap </div>
       <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="/user/<%= username %>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
@@ -61,7 +61,7 @@
                     <!-- Author -->
                     <p class="lead">
                       by
-                      <a href="#"><%= post.author %></a>
+                      <a href="/user/<%= post.author %>"><%= post.author %></a>
                     </p>
             
                     <hr>
@@ -100,9 +100,11 @@
                     <% if (comments.length > 0) { %>
                       <% for (let comment of comments) { %>
                         <div class="media mb-4">
-                          <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50?text=<%= comment.username[0] %>" alt="User Image">
+                          <a class="text-body" href="/user/<%= comment.username %>">
+                            <img class="d-flex mr-3 rounded-circle" src="https://picsum.photos/seed/<%= comment.username %>/50" alt="User Image">
+                          </a>
                           <div class="media-body">
-                            <h5 class="mt-0"><%= comment.username %></h5>
+                            <h5 class="mt-0"><a class="text-body" href="/user/<%= comment.username %>"><%= comment.username %></a></h5>
                             <%= comment.commentBody %>
                           </div>
                         </div>

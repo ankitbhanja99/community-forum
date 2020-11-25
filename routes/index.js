@@ -62,6 +62,11 @@ router.get('/post/:id',
     appController.getPost 
 );
 
+router.get('/user/:username',
+    ensureAuthenticated,
+    appController.getUserProfile 
+);
+
 // GET all posts in the runtime
 router.get('/all', appController.getAll);
 
