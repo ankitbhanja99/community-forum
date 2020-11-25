@@ -65,8 +65,8 @@
                     <div class="card mb-4">
                       <img class="card-img-top" src="https://picsum.photos/seed/<%= post._id %>/750/300" alt="Card image cap">
                       <div class="card-body">
-                        <h2 class="card-title"><%= post.title %></h2>
-                        <p class="card-text"><%= post.bodytext %></p>
+                        <h2 class="card-title" style="word-wrap:break-word"><%= post.title %></h2>
+                        <p class="card-text" style="word-wrap:break-word"><%= post.bodytext %></p>
                         <a href="/post/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
                       </div>
                       <div class="card-footer text-muted">
