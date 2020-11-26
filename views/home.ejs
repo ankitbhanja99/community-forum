@@ -68,7 +68,13 @@
                       </a>
                       <div class="card-body">
                         <h2 class="card-title" style="word-wrap:break-word"><%= post.title %></h2>
-                        <p class="card-text" style="word-wrap:break-word"><%= post.bodytext %></p>
+                        <p class="card-text" style="word-wrap:break-word">
+                          <% if (post.bodytext.length > 190) { %>
+                            <%= post.bodytext.slice(0, 190) %><span class="text-muted">...</span>
+                          <% } else { %>
+                            <%= post.bodytext %>
+                          <% } %> 
+                        </p>
                         <a href="/post/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
                       </div>
                       <div class="card-footer text-muted">
