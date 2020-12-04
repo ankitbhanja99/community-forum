@@ -2,12 +2,12 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Start Bootstrap </div>
+      <div class="sidebar-heading">Start Bootstrap</div>
       <div class="list-group list-group-flush">
         <a href="/user/<%= username %>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="/cat1" class="list-group-item list-group-item-action bg-light">Category 1</a>
+        <a href="/cat2" class="list-group-item list-group-item-action bg-light">Category 2</a>
+        <a href="/cat3" class="list-group-item list-group-item-action bg-light">Category 3</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
@@ -74,22 +74,21 @@
                             <input type="title" class="form-control" id='title' name='title' aria-label="Enter Title"
                             value="<%= typeof title != 'undefined' ? title : '' %>"/>
                         </div>
-                        <input type="hidden" id="author" name="author" value="<%= username %>">
-                        
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                             <label class="input-group-text" for="category">Category</label>
                             </div>
                             <select class="custom-select" id="category" name="category" aria-label="Select Category">
-                            <option hidden disabled selected value>Choose a Category</option>
-                            <option value="cat1">Cat1</option>
-                            <option value="cat2">Cat2</option>
-                            <option value="cat3">Cat3</option>
+                              <option hidden disabled selected value>Choose a Category</option>
+                              <option value="cat1">Cat1</option>
+                              <option value="cat2">Cat2</option>
+                              <option value="cat3">Cat3</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <textarea type="bodytext" class="form-control" id="bodytext" name="bodytext" rows="10" aria-label="Enter Text"><%= typeof bodytext != 'undefined' ? bodytext : '' %></textarea>
+                            <textarea type="postBody" class="form-control" id="postBody" name="postBody" rows="10" aria-label="Enter Text"><%= typeof postBody != 'undefined' ? postBody : '' %></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

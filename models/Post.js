@@ -7,25 +7,25 @@ const postSchema = new mongoose.Schema({
     required: true,
     maxlength: 100
   },
-  bodytext: {
+  postBody: {
     type: String,
     trim: true,
     required: true,
     maxlength: 1000
   },
-  author: {
+  username: {
     type: String,
     maxlength: 20,
-    trim: true
+    trim: true,
+    required: true
   },
-
-  posted: {
+  createdAt: {
     type: Date,
     default: Date.now()
   },
   category: {
     type: String,
-    max: 100
+    required: true
   }
 });
 

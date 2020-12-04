@@ -1,31 +1,20 @@
 const router = require('express').Router();
 const Post = require('../models/Post');
 const appController = require('../controllers/appController');
-const User = require("../models/User");
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 router.get('/home',
-    ensureAuthenticated, async (req, res) => { 
-    const posts = await Post.find({})
-        .limit(100)
-        .sort({ posted: -1 });
-
-    res.render('home', {
-        styles: ['simple-sidebar'],
-        posts: posts,
-        libs: ['sidebar'],
-        username: req.user.username
-    })
-});
+    appController.ensureAuthenticated,
+    appController.getAllPosts    
+);
 
 router.get('/',
-    forwardAuthenticated,
+    appController.forwardAuthenticated,
     (req, res) => {
     res.render('welcome')
 });
 
 router.get('/dashboard',
-    ensureAuthenticated,
+    appController.ensureAuthenticated,
     (req, res) => {
     res.render('dashboard', {
         username: req.user.username,
@@ -35,40 +24,38 @@ router.get('/dashboard',
 
 //login handle
 router.get('/login',
-    forwardAuthenticated, (req,res) => {
+    appController.forwardAuthenticated, (req,res) => {
     res.render('login')
 });
 
 router.get('/register',
-    forwardAuthenticated,
-    (req,res)=>{ res.render('register', {
-        title: 'register'
+    appController.forwardAuthenticated, (req,res) => {
+    res.render('register', {
+        title: 'register',
+        libs: ['register']
     })
 });
 
+router.get('/:category',
+    appController.ensureAuthenticated,
+    appController.getCategoryPosts    
+);
 
 
 
-router.get('/trial/:id',
-    (req, res) => {
-    res.render('dashboard', {
-        username: "ankitbhanja",
-        post: appController.trialPost 
-    });
-});
 
 router.get('/post/:id',
-    ensureAuthenticated,
+    appController.ensureAuthenticated,
     appController.getPost 
 );
 
 router.get('/user/:username',
-    ensureAuthenticated,
+    appController.ensureAuthenticated,
     appController.getUserProfile 
 );
 
 // GET all posts in the runtime
-router.get('/all', appController.getAll);
+//router.get('/all', appController.getAll);
 
 // register for a username
 router.post(
@@ -88,7 +75,7 @@ router.get(
 
 router.get(
     "/create",
-    ensureAuthenticated, (req, res) => {
+    appController.ensureAuthenticated, (req, res) => {
     res.render('create', {
         styles: ['simple-sidebar'],
         libs: ['sidebar'],
@@ -108,12 +95,8 @@ router.post(
 );
 
 router.post(
-    '/comment',
+    '/comment/:postID',
     appController.postComment
 );
-
-
-
-
 
 module.exports = router;

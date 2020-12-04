@@ -3,26 +3,47 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const passport = require('passport');
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 require('dotenv').config({ path: '.env' });
 
 // GET all posts
 
-exports.getAll = async (req, res) => {
-  try {
-    const posts = await Post.find({})
+exports.getAllPosts = async (req, res) => { 
+  const posts = await Post.find({})
       .limit(100)
-      .sort({ posted: -1 });
-    res.send(posts);
-  } catch (error) {}
+      .sort({ createdAt: -1 });
+
+  res.render('home', {
+      title: "Home",
+      small: "For All Types Of Posts",
+      styles: ['simple-sidebar'],
+      posts: posts,
+      libs: ['sidebar'],
+      username: req.user.username
+  })
 };
+
+
+exports.ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.flash('error_msg', 'Please log in to view that resource');
+  res.redirect('/login');
+};
+
+exports.forwardAuthenticated = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/home');      
+};
+
 
 exports.getPost = async (req, res,) => {
   try {
     const post = await Post.find({_id: req.params.id});
     const comments = await Comment.find({postID: req.params.id})
-    .sort({ commentedAt: -1 });
+    .sort({ createdAt: -1 });
     res.render('post', {
       styles: ['simple-sidebar'],
       post: post[0],
@@ -39,13 +60,29 @@ exports.getPost = async (req, res,) => {
   }
 };
 
+exports.getCategoryPosts = async (req, res,) => {
+
+    const posts = await Post.find({category: req.params.category})
+    .limit(100)
+    .sort({ createdAt: -1 });
+    
+    res.render('home', {
+      title: req.params.category,
+      small: "",
+      styles: ['simple-sidebar'],
+      posts: posts,
+      libs: ['sidebar'],
+      username: req.user.username
+  })
+};
+
 exports.getUserProfile = async (req, res,) => {
   try {
     const user = await User.find({username: req.params.username});
-    const posts = await Post.find({author: req.params.username})
-    .sort({ posted: -1 });
+    const posts = await Post.find({username: req.params.username})
+    .sort({ createdAt: -1 });
     const comments = await Comment.find({username: req.params.username})
-    .sort({ commentedAt: -1 });
+    .sort({ createdAt: -1 });
     res.render('userprofile', {
       styles: ['simple-sidebar'],
       user: user[0],
@@ -70,14 +107,16 @@ exports.getUserProfile = async (req, res,) => {
 exports.register = (req, res) => {
   
   const {
-      username,
+      fullname,
       email,
+      username,
       password,
       password2
   } = req.body;
+  const dob = new Date(req.body.dob);
   let errors = [];
 
-  if (!username || !email || !password || !password2) {
+  if (!fullname || !dob || !username || !email || !password || !password2) {
     errors.push({ msg: 'Please enter all fields' });
   }
 
@@ -96,6 +135,7 @@ exports.register = (req, res) => {
   if (errors.length > 0) {
     res.render('register', {
       errors,
+      fullname,
       username,
       email,
       password,
@@ -107,6 +147,7 @@ exports.register = (req, res) => {
         errors.push({ msg: 'Email already exists' });
         res.render('register', {
           errors,
+          fullname,
           username,
           email,
           password,
@@ -119,13 +160,16 @@ exports.register = (req, res) => {
             res.render('register', {
               errors,
               email,
+              fullname,
               password,
               password2
             });
           } else {
             const newUser = new User({
-              username,
+              fullname,
               email,
+              username,
+              dob,
               password
             });
 
@@ -176,17 +220,19 @@ exports.postUpdate = (req, res) => {
   
   const {
     title,
-    author,
+    // author,
     category,
-    bodytext
+    postBody
   } = req.body;
+  
+  const username = req.user.username;
 
   let errors = [];
-  if ( !author || !title || !bodytext || !category) {
+  if ( !username || !title || !postBody || !category) {
     errors.push({ msg: 'Please enter all fields' });
   }
 
-  if (bodytext.length > 1000) {
+  if (postBody.length > 1000) {
     errors.push({ msg: 'Body text cannot exceed 1000 characters' });
   }
   
@@ -198,7 +244,7 @@ exports.postUpdate = (req, res) => {
       res.render('create', {
       errors,
       title,
-      bodytext,
+      postBody,
       styles: ['simple-sidebar'],
       libs: ['create'],
       username: req.user.username
@@ -206,9 +252,9 @@ exports.postUpdate = (req, res) => {
   } else {
     const newPost = new Post({
       title,
-      author,
+      username,
       category,
-      bodytext
+      postBody
     });
 
     newPost.save()
@@ -228,14 +274,13 @@ exports.postUpdate = (req, res) => {
 
 exports.postComment = async (req, res) => {
   
-  const {
-    username,
-    postID,
-    commentBody
-  } = req.body;
+  const commentBody = req.body.commentBody;
+  const postTitle = req.body.postTitle;
+  const postID = req.params.postID;
+  const username = req.user.username;
   const post = await Post.find({_id: postID});
   const comments = await Comment.find({postID: postID})
-  .sort({ commentedAt: -1 });
+  .sort({ createdAt: -1 });
 
   let errors = [];
   if ( !username || !postID || !commentBody) {
@@ -262,6 +307,7 @@ exports.postComment = async (req, res) => {
     const newComment = new Comment({
       username,
       postID,
+      postTitle,
       commentBody
     });
 

@@ -5,9 +5,9 @@
       <div class="sidebar-heading">Start Bootstrap </div>
       <div class="list-group list-group-flush">
         <a href="/user/<%= username %>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="/cat1" class="list-group-item list-group-item-action bg-light">Category 1</a>
+        <a href="/cat2" class="list-group-item list-group-item-action bg-light">Category 2</a>
+        <a href="/cat3" class="list-group-item list-group-item-action bg-light">Category 3</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
@@ -61,13 +61,13 @@
                     <!-- Author -->
                     <p class="lead">
                       by
-                      <a href="/user/<%= post.author %>"><%= post.author %></a>
+                      <a href="/user/<%= post.username %>"><%= post.username %></a>
                     </p>
             
                     <hr>
             
                     <!-- Date/Time -->
-                    <p>Posted on <%= new Date(post.posted).toDateString() %></p>
+                    <p>Posted on <%= new Date(post.createdAt).toDateString() %></p>
             
                     <hr>
             
@@ -76,7 +76,7 @@
             
                     <hr>
             
-                    <p class="text-left" style="word-wrap:break-word"><%= post.bodytext %></p>
+                    <p class="text-left" style="word-wrap:break-word"><%= post.postBody %></p>
             
                     <hr>
             
@@ -85,32 +85,32 @@
                       <h5 class="card-header">Leave a Comment:</h5>
                       <div class="card-body">
                         <%- include ('partials/messages') %>
-                        <form action="/comment" method="POST">
-                          <input type="hidden" id="username" name="username" value="<%= username %>">
-                          <input type="hidden" id="postID" name="postID" value="<%= post._id %>">
+                        <form action="/comment/<%= post._id %>" method="POST">
+                          <input type="hidden" id="postTitle" name="postTitle" value="<%= post.title %>">
                           <div class="form-group">
                             <textarea type="commentBody" id="commentBody" name="commentBody" class="form-control" rows="3"><%= typeof commentBody != 'undefined' ? commentBody : '' %></textarea>
                           </div>
                           <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+
+                        <hr>
+
+                        <% if (comments.length > 0) { %>
+                          <% for (let comment of comments) { %>
+                            <div class="media mb-4">
+                              <a class="text-body" href="/user/<%= comment.username %>">
+                                <img class="d-flex mr-3 rounded-circle" src="https://picsum.photos/seed/<%= comment.username %>/50" alt="User Image">
+                              </a>
+                              <div class="media-body">
+                                <h5 class="mt-0"><a class="text-body" href="/user/<%= comment.username %>"><%= comment.username %></a></h5>
+                                <%= comment.commentBody %>
+                              </div>
+                            </div>
+                          <% } %>
+                        <% } %>
+
                       </div>
                     </div>
-                    
-                    <!-- Single Comment -->
-                    <% if (comments.length > 0) { %>
-                      <% for (let comment of comments) { %>
-                        <div class="media mb-4">
-                          <a class="text-body" href="/user/<%= comment.username %>">
-                            <img class="d-flex mr-3 rounded-circle" src="https://picsum.photos/seed/<%= comment.username %>/50" alt="User Image">
-                          </a>
-                          <div class="media-body">
-                            <h5 class="mt-0"><a class="text-body" href="/user/<%= comment.username %>"><%= comment.username %></a></h5>
-                            <%= comment.commentBody %>
-                          </div>
-                        </div>
-                      <% } %>
-                    <% } %>
-            
                   </div>
 
             <!-- Sidebar Widgets Column -->

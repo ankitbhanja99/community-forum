@@ -5,9 +5,9 @@
       <div class="sidebar-heading">Start Bootstrap </div>
       <div class="list-group list-group-flush">
         <a href="/user/<%= username %>" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="/cat1" class="list-group-item list-group-item-action bg-light">Category 1</a>
+        <a href="/cat2" class="list-group-item list-group-item-action bg-light">Category 2</a>
+        <a href="/cat3" class="list-group-item list-group-item-action bg-light">Category 3</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
@@ -47,7 +47,7 @@
         </div>
       </nav>
 
-      <div class="container-fluid">
+      <!-- div class="container-fluid" -->
   
         <!-- Page Content -->
         <div class="container">
@@ -56,8 +56,8 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <h1 class="my-4">Home
-                <small>For All Types Of Posts</small>
+                <h1 class="my-4"><%= title %> 
+                <small><%= small %> </small>
                 </h1>
                 <%- include ('partials/messages') %>
                 <% if (posts.length > 0) { %>
@@ -69,24 +69,26 @@
                       <div class="card-body">
                         <h2 class="card-title" style="word-wrap:break-word"><%= post.title %></h2>
                         <p class="card-text" style="word-wrap:break-word">
-                          <% if (post.bodytext.length > 190) { %>
-                            <%= post.bodytext.slice(0, 190) %><span class="text-muted">...</span>
+                          <% if (post.postBody.length > 190) { %>
+                            <%= post.postBody.slice(0, 190) %><span class="text-muted">...</span>
                           <% } else { %>
-                            <%= post.bodytext %>
+                            <%= post.postBody %>
                           <% } %> 
                         </p>
                         <a href="/post/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
                       </div>
                       <div class="card-footer text-muted">
-                        Posted on <%= new Date(post.posted).toDateString() %> by
-                        <a href="/user/<%= post.author %>"><%= post.author %></a>
+                        Posted on <%= new Date(post.createdAt).toDateString() %> by
+                        <a href="/user/<%= post.username %>"><%= post.username %></a>
                       </div>
                     </div>
                   <% } %>
-                <% } %>
+                <% } else { %>
+                  <h1 class="display-4 text-muted">This place looks empty!</h1>
+                <% } %> 
 
 
-                <!-- Pagination -->
+                <!-- Pagination >
                 <ul class="pagination justify-content-center mb-4">
                 <li class="page-item">
                     <a class="page-link" href="#">&larr; Older</a>
@@ -94,7 +96,7 @@
                 <li class="page-item disabled">
                     <a class="page-link" href="#">Newer &rarr;</a>
                 </li>
-                </ul>
+                </ul -->
 
             </div>
 
@@ -163,7 +165,7 @@
             <!-- /.row -->
         </div>
         <!-- /.container -->
-      </div>
+      <!-- /div -->
     </div>
     <!-- /#page-content-wrapper -->
 

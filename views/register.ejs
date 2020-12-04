@@ -8,14 +8,14 @@
         <%- include ('partials/messages') %>
         <form action="/register" method="POST">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="fullname">Full Name</label>
             <input
-              type="username"
-              id="username"
-              name="username"
+              type="fullname"
+              id="fullname"
+              name="fullname"
               class="form-control"
-              placeholder="Enter Username"
-              value="<%= typeof username != 'undefined' ? username : '' %>"
+              placeholder="Enter Full Name"
+              value="<%= typeof fullname != 'undefined' ? fullname : '' %>"
             />
           </div>
           <div class="form-group">
@@ -28,6 +28,25 @@
               placeholder="Enter Email"
               value="<%= typeof email != 'undefined' ? email : '' %>"
             />
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="username"
+              id="username"
+              name="username"
+              class="form-control"
+              placeholder="Enter Username"
+              value="<%= typeof username != 'undefined' ? username : '' %>"
+            />
+          </div>
+          <div class="form-group">
+            <label for="datepicker">Date of Birth</label>
+            <input
+              name="dob"
+              id="datepicker"
+              placeholder="mm/dd/yyyy"
+              />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
