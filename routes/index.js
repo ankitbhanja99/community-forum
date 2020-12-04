@@ -36,7 +36,7 @@ router.get('/register',
     })
 });
 
-router.get('/:category',
+router.get('/category/:category',
     appController.ensureAuthenticated,
     appController.getCategoryPosts    
 );
