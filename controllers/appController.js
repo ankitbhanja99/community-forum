@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Comment = require("../models/Comment");
 const passport = require('passport');
 const bcrypt = require("bcryptjs");
+const { post } = require('../routes');
 require('dotenv').config({ path: '.env' });
 
 // GET all posts
@@ -38,6 +39,19 @@ exports.forwardAuthenticated = (req, res, next) => {
   res.redirect('/home');      
 };
 
+exports.ensureAuthorized = async (req, res, next) => {
+  const postID = req.params.postID;
+  const post = await Post.find({_id: postID});
+  const originalUser = post[0].username;
+
+  if (req.user.username == originalUser) {
+    return next();
+  }
+  req.flash('error_msg', 'You don\'t have the access to modify this post');
+  res.redirect('/post/'+postID);
+};
+
+
 
 exports.getPost = async (req, res,) => {
   try {
@@ -45,7 +59,7 @@ exports.getPost = async (req, res,) => {
     const comments = await Comment.find({postID: req.params.id})
     .sort({ createdAt: -1 });
     res.render('post', {
-      styles: ['simple-sidebar'],
+      styles: ['simple-sidebar','post'],
       post: post[0],
       comments: comments,
       libs: ['sidebar'],
@@ -216,11 +230,10 @@ exports.logout = (req, res) => {
 
 // POST an update to the database
 
-exports.postUpdate = (req, res) => {
+exports.createPost = (req, res) => {
   
   const {
     title,
-    // author,
     category,
     postBody
   } = req.body;
@@ -244,9 +257,10 @@ exports.postUpdate = (req, res) => {
       res.render('create', {
       errors,
       title,
+      category,
       postBody,
       styles: ['simple-sidebar'],
-      libs: ['create'],
+      libs: ['sidebar'],
       username: req.user.username
     });
   } else {
@@ -268,6 +282,97 @@ exports.postUpdate = (req, res) => {
     .catch(err => console.log(err));
 
   }
+};
+
+
+
+exports.getEdit = async (req, res) => {
+  
+  const postID = req.params.postID;
+  const post = await Post.findOne({_id: postID});
+  const {
+    title,
+    category,
+    postBody
+  } = post;
+
+  res.render('edit', {
+    title,
+    category,
+    postBody,
+    postID,
+    styles: ['simple-sidebar'],
+    libs: ['sidebar'],
+    username: req.user.username
+  });
+};
+
+
+exports.postEdit = async (req, res) => {
+  
+  const {
+    title,
+    postBody
+  } = req.body;
+  
+  const postID = req.params.postID;
+
+  const username = req.user.username;
+
+  let errors = [];
+  if ( !title || !postBody ) {
+    errors.push({ msg: 'Please enter all fields' });
+  }
+
+  if (postBody.length > 1000) {
+    errors.push({ msg: 'Body text cannot exceed 1000 characters' });
+  }
+  
+
+  if (errors.length > 0) {
+    
+      res.render('edit', {
+      errors,
+      title,
+      postBody,
+      styles: ['simple-sidebar'],
+      libs: ['sidebar'],
+      username: req.user.username
+    });
+  } else {
+
+    Post.findByIdAndUpdate(postID,
+      { $set: {
+         title: title,
+         postBody: postBody,
+         edited: true
+        }
+    })
+    .then( posts => {
+      req.flash(
+        'success_msg',
+        'The post was edited successfully'
+      );
+      res.redirect('/post/'+postID);
+    })
+    .catch(err => console.log(err));
+
+  }
+};
+
+
+exports.deletePost = async (req, res) => {
+  
+  const postID = req.params.postID;
+  Post.findByIdAndDelete(postID)
+    .then( posts => {
+      req.flash(
+        'success_msg',
+        'The post was deleted successfully'
+      );
+      res.redirect('/home');
+    })
+    .catch(err => console.log(err));
 };
 
 

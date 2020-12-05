@@ -25,7 +25,12 @@ const postSchema = new mongoose.Schema({
   },
   category: {
     type: String,
+    lowercase: true,
     required: true
+  },
+  edited: {
+    type: Boolean,
+    default: false
   }
 });
 

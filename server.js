@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology : true})
+mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology : true}, { useFindAndModify: false})
 .then(() => console.log('connected to MongoDB'));
 mongoose.connection.on('error', (err) => {
   console.log(err.message);

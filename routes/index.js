@@ -49,6 +49,23 @@ router.get('/post/:id',
     appController.getPost 
 );
 
+router.get('/edit/:postID',
+    appController.ensureAuthenticated,
+    appController.ensureAuthorized,
+    appController.getEdit 
+);
+
+router.post('/edit/:postID',
+    appController.postEdit 
+);
+
+router.get('/delete/:postID',
+    appController.ensureAuthenticated,
+    appController.ensureAuthorized,
+    appController.deletePost 
+);
+
+
 router.get('/user/:username',
     appController.ensureAuthenticated,
     appController.getUserProfile 
@@ -77,6 +94,7 @@ router.get(
     "/create",
     appController.ensureAuthenticated, (req, res) => {
     res.render('create', {
+        title: 'Create',
         styles: ['simple-sidebar'],
         libs: ['sidebar'],
         username: req.user.username
@@ -91,7 +109,7 @@ router.get('/logout', appController.logout);
 // NEEDS verification
 router.post(
     '/create',
-    appController.postUpdate
+    appController.createPost
 );
 
 router.post(
