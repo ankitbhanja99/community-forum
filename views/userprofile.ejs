@@ -110,7 +110,13 @@
                                     </a>
                                 <div class="card-body">
                                     <h2 class="card-title" style="word-wrap:break-word"><a href="/post/<%= post._id %>"><%= post.title %></a></h2>
-                                    <p class="card-text" style="word-wrap:break-word"><%= post.postBody %></p>
+                                    <p class="card-text" style="word-wrap:break-word;">
+                                      <% if (post.postBody.length > 800) { %>
+                                        <%- post.postBody.slice(0, 800) %><span class="text-muted">...</span>
+                                      <% } else { %>
+                                        <%- post.postBody %>
+                                      <% } %>
+                                    </p>
                                 </div>
                                 </div>
                             <% } %>

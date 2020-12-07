@@ -245,8 +245,8 @@ exports.createPost = (req, res) => {
     errors.push({ msg: 'Please enter all fields' });
   }
 
-  if (postBody.length > 1000) {
-    errors.push({ msg: 'Body text cannot exceed 1000 characters' });
+  if (postBody.length > 10000) {
+    errors.push({ msg: 'Body text cannot exceed 10000 characters' });
   }
   
   
@@ -324,8 +324,8 @@ exports.postEdit = async (req, res) => {
     errors.push({ msg: 'Please enter all fields' });
   }
 
-  if (postBody.length > 1000) {
-    errors.push({ msg: 'Body text cannot exceed 1000 characters' });
+  if (postBody.length > 10000) {
+    errors.push({ msg: 'Body text cannot exceed 10000 characters' });
   }
   
 

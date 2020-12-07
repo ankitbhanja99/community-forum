@@ -71,9 +71,9 @@
                         <h2 class="card-title" style="word-wrap:break-word"><%= post.title %></h2>
                         <p class="card-text" style="word-wrap:break-word">
                           <% if (post.postBody.length > 190) { %>
-                            <%= post.postBody.slice(0, 190) %><span class="text-muted">...</span>
+                            <%- post.postBody.slice(0, 190) %><span class="text-muted">...</span>
                           <% } else { %>
-                            <%= post.postBody %>
+                            <%- post.postBody %>
                           <% } %> 
                         </p>
                         <a href="/post/<%= post._id %>" class="btn btn-primary">Read More &rarr;</a>
@@ -81,6 +81,7 @@
                       <div class="card-footer text-muted">
                         Posted on <%= new Date(post.createdAt).toDateString() %> by
                         <a href="/user/<%= post.username %>"><%= post.username %></a>
+                        <span class="float-right">#<%= post.category %> </span>
                       </div>
                     </div>
                   <% } %>

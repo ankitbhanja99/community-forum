@@ -94,7 +94,7 @@ router.get(
     "/create",
     appController.ensureAuthenticated, (req, res) => {
     res.render('create', {
-        title: 'Create',
+        active: 'Create',
         styles: ['simple-sidebar'],
         libs: ['sidebar'],
         username: req.user.username

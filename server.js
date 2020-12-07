@@ -19,15 +19,20 @@ app.use(helmet());
 
 app.use(
   session({
-    secret: 'secret',
+    secret: process.env.SECRET,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+      maxAge: 24*60*60*1000,
+      httpOnly: true
+  }
   })
 );
 
 mongoose.connect(process.env.DATABASE, {useNewUrlParser: true, useUnifiedTopology : true}, { useFindAndModify: false})
-.then(() => console.log('connected to MongoDB'));
-mongoose.connection.on('error', (err) => {
+.then(() => console.log('connected to MongoDB'))
+.catch('error', (err) => {
   console.log(err.message);
 });
 

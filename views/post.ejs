@@ -1,20 +1,22 @@
 <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
+    <%- include ('partials/sidebar') %>
+    <!-- div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">*coolWebsiteName*</div>
       <div class="list-group list-group-flush">
         <a href="/category/cat1" class="list-group-item list-group-item-action bg-light">Category 1</a>
         <a href="/category/cat2" class="list-group-item list-group-item-action bg-light">Category 2</a>
         <a href="/category/cat3" class="list-group-item list-group-item-action bg-light">Category 3</a>
       </div>
-    </div>
+    </div -->
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="page-content-wrapper">
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div id="page-content-wrapper">
+      <%- include ('partials/navbar') %>
+      <!-- nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,10 +33,10 @@
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= username %>
+                <%#= username %>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/user/<%= username %>">Profile</a>
+                <a class="dropdown-item" href="/user/<%#= username %>">Profile</a>
                 <a class="dropdown-item" href="#">Another action</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/logout">Logout</a>
@@ -42,7 +44,7 @@
             </li>
           </ul>
         </div>
-      </nav>
+      </nav -->
 
       <div class="container-fluid">
   
@@ -92,7 +94,7 @@
             
                     <hr>
             
-                    <p class="text-left" style="word-wrap:break-word"><%= post.postBody %></p>
+                    <p class="text-left" style="word-wrap:break-word; white-space: pre-wrap"><%- post.postBody %></p>
             
                     <hr>
             
@@ -118,7 +120,7 @@
                               </a>
                               <div class="media-body">
                                 <h5 class="mt-0"><a class="text-body" href="/user/<%= comment.username %>"><%= comment.username %></a></h5>
-                                <%= comment.commentBody %>
+                                <%- comment.commentBody %>
                               </div>
                             </div>
                           <% } %>

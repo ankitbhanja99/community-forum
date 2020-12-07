@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
-    maxlength: 1000
+    maxlength: 10000
   },
   username: {
     type: String,
@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: () => Date.now()
   },
   category: {
     type: String,
