@@ -1,0 +1,192 @@
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Start Bootstrap </div>
+      <div class="list-group list-group-flush">
+        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href='/create'>Create</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= username %>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">Logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+  
+        <!-- Page Content -->
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-8">
+
+                    <!-- Title -->
+                    <h1 class="mt-4"><%= post.title %></h1>
+            
+                    <!-- Author -->
+                    <p class="lead">
+                      by
+                      <a href="#"><%= post.author %></a>
+                    </p>
+            
+                    <hr>
+            
+                    <!-- Date/Time -->
+                    <p>Posted on <%= new Date(post.posted).toDateString() %></p>
+            
+                    <hr>
+            
+                    <!-- Preview Image -->
+                    <img class="img-fluid rounded" src="https://picsum.photos/seed/<%= post._id %>/900/400" alt="Random Image">
+            
+                    <hr>
+            
+                    <p class="text-left"><%= post.bodytext %></p>
+            
+                    <hr>
+            
+                    <!-- Comments Form -->
+                    <div class="card my-4">
+                      <h5 class="card-header">Leave a Comment:</h5>
+                      <div class="card-body">
+                        <%- include ('partials/messages') %>
+                        <form action="/comment" method="POST">
+                          <input type="hidden" id="username" name="username" value="<%= username %>">
+                          <input type="hidden" id="postID" name="postID" value="<%= post._id %>">
+                          <div class="form-group">
+                            <textarea type="commentBody" id="commentBody" name="commentBody" class="form-control" rows="3"><%= typeof commentBody != 'undefined' ? commentBody : '' %></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                      </div>
+                    </div>
+                    
+                    <!-- Single Comment -->
+                    <% if (comments.length > 0) { %>
+                      <% for (let comment of comments) { %>
+                        <div class="media mb-4">
+                          <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50?text=<%= comment.username[0] %>" alt="User Image">
+                          <div class="media-body">
+                            <h5 class="mt-0"><%= comment.username %></h5>
+                            <%= comment.commentBody %>
+                          </div>
+                        </div>
+                      <% } %>
+                    <% } %>
+            
+                  </div>
+
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <!-- Search Widget -->
+                <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary" type="button">Go!</button>
+                    </span>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#">Web Design</a>
+                        </li>
+                        <li>
+                            <a href="#">HTML</a>
+                        </li>
+                        <li>
+                            <a href="#">Freebies</a>
+                        </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#">JavaScript</a>
+                        </li>
+                        <li>
+                            <a href="#">CSS</a>
+                        </li>
+                        <li>
+                            <a href="#">Tutorials</a>
+                        </li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Side Widget -->
+                <div class="card my-4">
+                <h5 class="card-header">Side Widget</h5>
+                <div class="card-body">
+                  <iframe width="300" height="169" src="https://www.youtube.com/embed/L72fhGm1tfE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                </div>
+
+            </div>
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+  <!-- /#wrapper -->
+
+  <!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+</footer>
